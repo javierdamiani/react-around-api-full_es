@@ -1,12 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import { celebrate, Joi } from 'celebrate';
 import usersRoutes from './routes/users.js';
 import cardRoutes from './routes/cards.js';
 import auth from './middlewares/auth.js';
 import { login, createUser } from './controllers/users.js';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
-
-const { celebrate, Joi } = require('celebrate');
 
 const app = express();
 

@@ -1,4 +1,6 @@
 import express from 'express';
+import validator from 'validator';
+import { celebrate, Joi } from 'celebrate';
 import {
   getUsers,
   getUserId,
@@ -6,9 +8,6 @@ import {
   updateAvatar,
   getUserInfo,
 } from '../controllers/users.js';
-
-const { celebrate, Joi } = require('celebrate');
-const validator = require('validator');
 
 const router = express.Router();
 

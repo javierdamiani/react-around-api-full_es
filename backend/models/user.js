@@ -65,5 +65,5 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
     });
 };
 
-const user = mongoose.model('user', userSchema);
-export default user;
+const User = mongoose.model('user', userSchema);
+export default User;
