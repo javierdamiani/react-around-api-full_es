@@ -1,0 +1,20 @@
+.elements__template_element-trash {
+  position: absolute;
+  z-index: 4;
+  right: 15px;
+  top: 18px;
+  visibility: hidden;
+}
+.elements__template_element-trash:hover {
+  opacity: 0.5;
+  transition: opacity 0.5s linear;
+  cursor: pointer;
+}
+
+.elements__template_element-trash_active {
+  position: absolute;
+  z-index: 4;
+  right: 15px;
+  top: 18px;
+  visibility: visible;
+}

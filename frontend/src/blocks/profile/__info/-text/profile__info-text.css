@@ -1,0 +1,17 @@
+.profile__info-text {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 13px;
+}
+/* @media screen and (max-width: 320px) {
+  .profile__info-text {
+    max-width: 224px;
+    max-height: 22px;
+    margin-top: 30px;
+  }
+}
+@media screen and (min-width: 321px) and (max-width: 768px) {
+  .profile__info-text {
+    font-size: 20px;
+  }
+} */

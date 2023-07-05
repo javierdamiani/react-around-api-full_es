@@ -1,0 +1,12 @@
+.elements__template_element-counter {
+    color: black;
+    margin: 0;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 15.73px;
+    text-align: center;
+    position: absolute;
+    z-index: 7;
+    bottom: 12px;
+    right: 24px;
+  }

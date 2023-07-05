@@ -1,0 +1,12 @@
+.popup_img {
+  background-color: rgba(0, 0, 0, 0.5);
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear;
+}

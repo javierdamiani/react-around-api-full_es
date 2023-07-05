@@ -1,0 +1,14 @@
+.popup__img {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  flex-direction: column;
+}
+@media screen and (max-width: 320px) {
+  .popup__img_container {
+    justify-content: flex-start;
+  }
+}

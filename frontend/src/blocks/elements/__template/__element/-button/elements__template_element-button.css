@@ -1,0 +1,17 @@
+.elements__template_element-button {
+  border-color: transparent;
+  background-position: center;
+  box-sizing: content-box;
+  background-repeat: no-repeat;
+  height: 19px;
+  width: 21px;
+  position: absolute;
+  bottom: 30px;
+  z-index: 3;
+  right: 18px;
+}
+.elements__template_element-button:hover {
+  opacity: 0.5;
+  transition: opacity 0.5s linear;
+  cursor: pointer;
+}

@@ -1,0 +1,16 @@
+.elements__template_element-text {
+  position: absolute;
+  z-index: 1;
+  color: black;
+  font-weight: 900;
+  line-height: 29px;
+  font-size: 24px;
+  bottom: 31px;
+  max-width: 246px;
+  max-height: 23px;
+  width: 100%;
+  left: 21px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
