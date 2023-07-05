@@ -1,123 +1,51 @@
-import cards from "../models/card.js";
+import Card from '../models/card.js';
 
-export const getCards = (req, res) => {
-  cards
-    .find({})
-    .then((card) => {
-      if (!card) {
-        const error = new Error("Cards not found");
-        error.statusCode = 404;
-        throw error;
-      }
-      res.send(card);
-    })
-    .catch((err) => {
-      if (err.name === "SomeErrorName") {
-        return res
-          .status(ERROR_CODE)
-          .send({ message: "Error message for SomeErrorName" });
-      }
-      res.status(500).send({ message: "Error" });
-    });
+export const getCards = (req, res, next) => {
+  Card.find({})
+    .then((cards) => res.send({ data: cards }))
+    .catch(next);
 };
 
-export const createCard = (req, res) => {
+export const createCard = (req, res, next) => {
   const { name, link } = req.body;
-  const owner = req.user._id; // Utiliza el campo _id de req.user como owner
 
-  cards
-    .create({ name, link, owner })
-    .then((card) => res.send(card))
-    .catch((err) => {
-      if (err.name === "SomeErrorName") {
-        return res
-          .status(ERROR_CODE)
-          .send({ message: "Error message for SomeErrorName" });
-      }
-      res.status(500).send({ message: "Error" });
-    });
+  Card.create({ name, link, owner: req.user._id })
+    .then((card) => res.send({ data: card }))
+    .catch(next);
 };
 
-export const deleteCard = (req, res) => {
-  const { id } = req.params;
+export const deleteCard = (req, res, next) => {
+  const { _id } = req.user;
   const { cardId } = req.params;
 
-  cards
-    .findById(cardId)
+  Card.findById(cardId)
+    .orFail()
     .then((card) => {
-      if (!card) {
-        const error = new Error("Card not found");
-        error.statusCode = 404;
-        throw error;
+      if (card.owner.toString() !== _id) {
+        return res.status(403).send({ message: 'No tienes permisos para borrar esta tarjeta' });
       }
-
-      // Verificar los derechos del usuario
-      if (card.owner.toString() !== req.user._id) {
-        const error = new Error("No tienes permisos para borrar esta tarjeta");
-        error.statusCode = 403;
-        throw error;
-      }
-
-      // Borrar la tarjeta
-      return card.remove();
+      card.deleteOne();
+      return res.send({ data: card });
     })
-    .then((removedCard) => {
-      res.send(removedCard);
-    })
-    .catch((err) => {
-      if (err.name === "SomeErrorName") {
-        return res
-          .status(ERROR_CODE)
-          .send({ message: "Error message for SomeErrorName" });
-      }
-      res.status(500).send({ message: "Error" });
-    });
+    .catch(next);
 };
 
-export const likeCard = (req, res) => {
-  const { id } = req.params;
-  cards
-    .findByIdAndUpdate(
-      id,
-      { $addToSet: { likes: req.user._id } },
-      { new: true }
-    )
-    .then((card) => {
-      if (!card) {
-        const error = new Error("Cards not found");
-        error.statusCode = 404;
-        throw error;
-      }
-      res.send(card);
-    })
-    .catch((err) => {
-      if (err.name === "SomeErrorName") {
-        return res
-          .status(ERROR_CODE)
-          .send({ message: "Error message for SomeErrorName" });
-      }
-      res.status(500).send({ message: "Error" });
-    });
+export const likeCard = (req, res, next) => {
+  const { cardId } = req.params;
+  Card.findByIdAndUpdate(cardId, { $addToSet: { likes: req.user._id } }, {
+    new: true,
+  })
+    .orFail()
+    .then((card) => res.send({ data: card }))
+    .catch(next);
 };
 
-export const dislikeCard = (req, res) => {
-  const { id } = req.params;
-  cards
-    .findByIdAndUpdate(id, { $pull: { likes: req.user._id } }, { new: true })
-    .then((card) => {
-      if (!card) {
-        const error = new Error("Cards not found");
-        error.statusCode = 404;
-        throw error;
-      }
-      res.send(card);
-    })
-    .catch((err) => {
-      if (err.name === "SomeErrorName") {
-        return res
-          .status(ERROR_CODE)
-          .send({ message: "Error message for SomeErrorName" });
-      }
-      res.status(500).send({ message: "Error" });
-    });
+export const dislikeCard = (req, res, next) => {
+  const { cardId } = req.params;
+  Card.findByIdAndUpdate(cardId, { $pull: { likes: req.user._id } }, {
+    new: true,
+  })
+    .orFail()
+    .then((card) => res.send({ data: card }))
+    .catch(next);
 };

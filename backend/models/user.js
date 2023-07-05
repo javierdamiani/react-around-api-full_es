@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import validator from "validator";
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -7,64 +7,63 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     validate: {
-      validator: (value) => {
-        return validator.isEmail(value);
+      validator(value) {
+        const urlRegex = /^\S+@\S+\.\S+$/;
+        return urlRegex.test(value);
       },
-      message: "El email no es válido",
+      message: (props) => `${props.value} no es un correo válido`,
     },
   },
   password: {
     type: String,
     required: true,
-    minlength: 8,
     select: false,
   },
   name: {
     type: String,
     minlength: 2,
     maxlength: 30,
-    default: "Jacques Cousteau",
+    default: 'Jacques Cousteau',
   },
   about: {
     type: String,
     minlength: 2,
     maxlength: 30,
-    default: "Explorador",
+    default: 'Explorador',
   },
   avatar: {
     type: String,
     default:
-      "https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg",
+      'https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg',
     validate: {
       validator: (value) => {
         // Expresión regular para validar el enlace del avatar
-        const urlRegex =
-          /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-_~:/?%#[\]@!$&'()*+,;=.]+$/;
+        const urlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-_~:/?%#[\]@!$&'()*+,;=.]+$/;
         return urlRegex.test(value);
       },
-      message: "El enlace del avatar no es válido",
+      message: 'El enlace del avatar no es válido',
     },
   },
 });
 
 userSchema.statics.findUserByCredentials = function findUserByCredentials(
   email,
-  password
+  password,
 ) {
   return this.findOne({ email })
-    .select("+password")
+    .select('+password')
     .then((user) => {
       if (!user) {
-        return Promise.reject(new Error("Correo o contraseña incorrecta"));
+        return Promise.reject(new Error('Correo o contraseña incorrecta'));
       }
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
-          return Promise.reject(new Error("Correo o contraseña incorrecta"));
+          return Promise.reject(new Error('Correo o contraseña incorrecta'));
         }
         return user;
       });
     });
 };
 
-const user = mongoose.model("user", userSchema);
+const user = mongoose.model('user', userSchema);
 export default user;

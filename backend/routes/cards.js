@@ -6,7 +6,7 @@ import {
   deleteCard,
   likeCard,
   dislikeCard,
-} from '../controllers/cards.js';
+} from '../controllers/cards';
 
 const router = express.Router();
 

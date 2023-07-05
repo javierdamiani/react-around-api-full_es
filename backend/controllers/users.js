@@ -1,142 +1,70 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwbtoken";
-// import jwt from "jsonwebtoken";
-// import dotenv from "dotenv";
-// import mongoose from "mongoose";"
-import user from "../models/user.js";
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User from '../models/user.js';
 
-export const getUsers = (req, res) => {
-  user
-    .find({})
-    .then((users) => {
-      if (users.length === 0) {
-        const error = new Error("Users not found");
-        error.statusCode = 404;
-        throw error;
-      }
-      res.send(users);
-    })
-    .catch((err) => {
-      if (err.name === "SomeErrorName") {
-        return res
-          .status(ERROR_CODE)
-          .send({ message: "Error message for SomeErrorName" });
-      }
-      res.status(500).send({ message: "Error" });
-    });
+export const getUsers = (req, res, next) => {
+  User.find({})
+    .then((users) => res.send({ data: users }))
+    .catch(next);
 };
 
-export const getUserId = (req, res) => {
-  user
-    .findById(req.params.id)
-    .then((user) => {
-      if (!user) {
-        const error = new Error("User not found");
-        error.statusCode = 404;
-        throw error;
-      }
-      res.send(user);
-    })
-    .catch((err) => {
-      if (err.name === "SomeErrorName") {
-        return res
-          .status(ERROR_CODE)
-          .send({ message: "Error message for SomeErrorName" });
-      }
-      res.status(500).send({ message: "Error" });
-    });
-};
-
-export const createUser = (req, res) => {
-  if (!req.body) {
-    return res.status(400).send({ message: "Invalid request body" });
-  }
-
-  const { email, password, name, about, avatar } = req.body;
-
-  if (!name || !about || !avatar || !email || !password) {
-    return res.status(400).send({ message: "Missing required fields" });
-  }
-
-  bcrypt.hash(password, 10).then((hash) => {
-    user
-      .create({ email, password: hash, name, about, avatar })
-      .then((user) => res.send({ data: user }))
-      .catch(() => res.status(500).send({ message: "Error" }));
-  });
-};
-
-export const updateUser = (req, res) => {
-  if (!req.body) {
-    return res.status(400).send({ message: "Invalid request body" });
-  }
-
-  const { name, about } = req.body;
-
-  user
-    .findByIdAndUpdate(
-      req.params.id,
-      { name, about },
-      { new: true, runValidators: true }
-    )
-    .orFail(() => {
-      const error = new Error("User not found");
-      error.statusCode = 404;
-      throw error;
-    })
+export const getUserId = (req, res, next) => {
+  const { id } = req.params;
+  User.findById(id)
+    .orFail()
     .then((user) => res.send({ data: user }))
-    .catch((err) => res.status(500).send({ message: "Error" }));
+    .catch(next);
 };
 
-export const updateAvatar = (req, res) => {
-  if (!req.body) {
-    return res.status(400).send({ message: "Invalid request body" });
-  }
+export const createUser = (req, res, next) => {
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
 
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
+    .then((user) => res.send({ data: user }))
+    .catch(next);
+};
+
+export const updateUser = (req, res, next) => {
+  const { name, about } = req.body;
+  User.findByIdAndUpdate(req.user._id, { name, about }, {
+    new: true,
+  })
+    .orFail()
+    .then((user) => res.send({ data: user }))
+    .catch(next);
+};
+
+export const updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
-
-  user
-    .findByIdAndUpdate(
-      req.params.id,
-      { avatar },
-      { new: true, runValidators: true }
-    )
-    .then((user) => {
-      if (!user) {
-        const error = new Error("User not found");
-        error.statusCode = 404;
-        throw error;
-      }
-      res.send({ data: user });
-    })
-    .catch((err) => {
-      if (err.name === "SomeErrorName") {
-        return res
-          .status(ERROR_CODE)
-          .send({ message: "Error message for SomeErrorName" });
-      }
-      res.status(500).send({ message: "Error" });
-    });
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+    .orFail()
+    .then((user) => res.send({ data: user }))
+    .catch(next);
 };
 
 export const login = (req, res) => {
   const { email, password } = req.body;
 
-  return user
+  return User
     .findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, "some-secret-key", {
-        expiresIn: "7d",
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', {
+        expiresIn: '7d',
       });
 
       res.send({ token });
     })
     .catch((err) => {
-      res.status(401).send({ message: "Wrong email or password" });
+      res.status(401).send({ message: err.message });
     });
 };
 
-const getUserInfo = (req, res, next) => {
+export const getUserInfo = (req, res, next) => {
   const { _id } = req.user;
   User.findById(_id)
     .then((user) => res.send({ data: user }))

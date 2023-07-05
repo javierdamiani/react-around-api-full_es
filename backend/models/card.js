@@ -11,7 +11,7 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: function (value) {
+      validator: function validateLink(value) {
         // Validar el enlace utilizando la expresión regular del esquema de usuario
         const userAvatarUrlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-_~:/?%#[\]@!$&'()*+,;=.]+$/;
         return userAvatarUrlRegex.test(value);
