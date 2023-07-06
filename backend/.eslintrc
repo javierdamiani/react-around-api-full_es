@@ -5,6 +5,6 @@
     "object-shorthand": "off",
     "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
     "consistent-return": "off",
-    "import/extensions": ["error", "ignorePackages"],
+    "import/extensions": ["error", "ignorePackages"]
   }
 }

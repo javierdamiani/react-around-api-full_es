@@ -39,7 +39,8 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
 
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState('');
+  const [token, setToken] = React.useState('');
 
   const navigate = useNavigate();
 
