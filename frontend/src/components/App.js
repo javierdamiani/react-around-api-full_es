@@ -102,15 +102,15 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  function handleCardDelete(card) {
-    api
-      .removeCard(card._id)
-      .then(() => {
-        const newCards = cards.filter((c) => c._id !== card._id);
-        setCards(newCards);
-      })
-      .catch((err) => console.log(err));
-  }
+  // function handleCardDelete(card) {
+  //   api
+  //     .removeCard(card._id)
+  //     .then(() => {
+  //       const newCards = cards.filter((c) => c._id !== card._id);
+  //       setCards(newCards);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
 
   function handleUpdateUser({ name, about }) {
     api
