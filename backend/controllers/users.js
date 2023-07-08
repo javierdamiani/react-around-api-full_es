@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 export const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send({ data: users }))
@@ -49,15 +51,17 @@ export const updateAvatar = (req, res, next) => {
 
 export const login = (req, res) => {
   const { email, password } = req.body;
-
-  return User
-    .findUserByCredentials(email, password)
+  return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'some-secret-key', {
-        expiresIn: '7d',
+      res.send({
+        token: jwt.sign(
+          { _id: user._id },
+          NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+          {
+            expiresIn: '7d',
+          },
+        ),
       });
-
-      res.send({ token });
     })
     .catch((err) => {
       res.status(401).send({ message: err.message });

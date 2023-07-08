@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { celebrate, Joi } from 'celebrate';
+import { celebrate, Joi, errors } from 'celebrate';
 import usersRoutes from './routes/users.js';
 import cardRoutes from './routes/cards.js';
 import auth from './middlewares/auth.js';
@@ -56,6 +56,8 @@ app.use('/users', usersRoutes);
 app.use('/cards', cardRoutes);
 
 app.use(errorLogger);
+
+app.use(errors());
 
 // Middleware para manejar rutas no encontradas
 app.use((req, res) => {
