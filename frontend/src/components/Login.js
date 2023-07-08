@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import * as auth from "../utils/auth";
 import { Link, useNavigate } from "react-router-dom";
 import InfoTooltip from "./InfoTooltip";

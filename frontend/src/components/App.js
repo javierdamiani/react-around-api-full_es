@@ -1,10 +1,8 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-  Link,
 } from "react-router-dom";
 import "../index.css";
 import Header from "./Header";
@@ -17,7 +15,6 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import SignIn from "../utils/auth";
 import ProtectedRoute from "./ProtectedRoute";
 import * as auth from "../utils/auth";
 import Register from "./Register";
@@ -45,22 +42,25 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    api
+    if(token) {
+      api
       .getCardList()
       .then((data) => {
         setCards(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+      });
+    }
+  }, [token])
 
   React.useEffect(() => {
-    api
+    if(token) {
+      api
       .getUserInfo()
       .then((data) => {
         setCurrentUser(data);
       })
       .catch((error) => console.log(error));
-  }, []);
+    }
+  }, [token])
 
   function onEditProfileClick() {
     setIsEditProfilePopUpOpen(true);
@@ -94,7 +94,7 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     api
-      .changeLikeCardStatus(card._id, !isLiked)
+      .changeLikeCardStatus(card._id, !isLiked, token)
       .then((newCard) => {
         const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
         setCards(newCards);
@@ -114,7 +114,7 @@ function App() {
 
   function handleUpdateUser({ name, about }) {
     api
-      .setUserInfo({ name, about })
+      .setUserInfo({ name, about }, token)
       .then((data) => {
         setCurrentUser(data);
         setIsEditProfilePopUpOpen(false);
@@ -134,7 +134,7 @@ function App() {
 
   function handleAddPlaceSubmit({ name, link }) {
     api
-      .addCard({ name, link })
+      .addCard({ name, link }, token)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         setIsAddPlacePopUpOpen(false);
