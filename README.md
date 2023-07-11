@@ -4,28 +4,30 @@ This repository leverages the latest advancements in React using Create React Ap
 
 Technologies Used 💻
 
-Frontend
+# Frontend
 
-JavaScript/JSX
-React
-React components
-React hooks
-Debugging
-Github
-Form validation
-Object-Oriented Programming (OOP)
-Webpack
-NPM
-Backend
+- JavaScript/JSX
+- React
+- React components
+- React hooks
+- Debugging
+- Github
+- Form validation
+- Object-Oriented Programming (OOP)
+- Webpack
+- NPM
 
-Node.js
-Express.js
-Database
-MongoDB
-Mongoose
-Google Cloud
-Application Access
+# Backend
+
+- Node.js
+- Express.js
+- Database
+- MongoDB
+- Mongoose
+- Google Cloud
+- Application Access
 
 The application is accessible through the following URLs:
-Frontend: www.javierdamiani.chickenkiller.com
-Backend: api.javierdamiani.chickenkiller.com
+
+- Frontend: www.javierdamiani.chickenkiller.com
+- Backend: api.javierdamiani.chickenkiller.com
