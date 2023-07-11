@@ -79,8 +79,14 @@ function App() {
     setIsSelectedCardOpen(true);
   }
 
-  function onDeleteCardClick() {
-    setIsDeleteCardPopUpOpen(true);
+    function handleCardDelete(card) {
+    api
+      .removeCard(card._id)
+      .then(() => {
+        const newCards = cards.filter((c) => c._id !== card._id);
+        setCards(newCards);
+      })
+      .catch((err) => console.log(err));
   }
 
   function closeAllPopups() {
@@ -102,15 +108,7 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  // function handleCardDelete(card) {
-  //   api
-  //     .removeCard(card._id)
-  //     .then(() => {
-  //       const newCards = cards.filter((c) => c._id !== card._id);
-  //       setCards(newCards);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
+
 
   function handleUpdateUser({ name, about }) {
     api
@@ -188,7 +186,7 @@ function App() {
                   onEditProfile={onEditProfileClick}
                   onAddPlace={onAddPlaceClick}
                   onEditAvatar={onEditAvatarClick}
-                  onDeleteCard={onDeleteCardClick}
+                  onCardDelete={handleCardDelete}
                   onCardClick={handleCardClick}
                   onCardLike={handleCardLike}
                   cards={cards}

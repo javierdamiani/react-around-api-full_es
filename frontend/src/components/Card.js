@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import trashCan from "../images/trashCan.svg";
 import likeBtn from "../images/like_button.svg";
 import rectangle from "../images/Rectangle.png";

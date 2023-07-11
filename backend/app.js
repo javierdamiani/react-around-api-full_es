@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import { celebrate, Joi, errors } from 'celebrate';
 import usersRoutes from './routes/users.js';
 import cardRoutes from './routes/cards.js';
@@ -24,8 +25,16 @@ mongoose
 
 // Middleware para analizar el cuerpo de la solicitud en formato JSON
 app.use(express.json());
+app.use(cors());
+app.options('*', cors()); // Habilitar las solicitudes de todas las rutas
 
 app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('El servidor va a caer');
+  }, 0);
+});
 
 app.post(
   '/signin',
