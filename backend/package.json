@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_OPTIONS='--experimental-specifier-resolution=node' node src/index.js",
+    "start": "NODE_OPTIONS='--experimental-specifier-resolution=node' node app.js",
     "lint": "npx eslint ."
   },
   "author": "Javier Damiani",
