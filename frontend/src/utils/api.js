@@ -1,85 +1,172 @@
+import { API_BASE_URL } from "./config";
+
 class Api {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
     this._headers = headers;
   }
 
-  _handleResponse(res) {
-    if (!res.ok) {
-      throw new Error(`Error: ${res.status}`);
+    async getCardList(token) {
+    try {
+      const response = await fetch(`${this._baseUrl}/cards`, {
+        headers: {
+          ...this._headers,
+          authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject(`Error:${response.status}`);
+      }
+    } catch (error) {
+      throw new Error(`${error}`);
     }
-    return res.json();
+  }
+ 
+  async getUserInfo(token) {
+    try {
+      const response = await fetch(`${this._baseUrl}/users/me`, {
+        headers: {
+          ...this._headers,
+          authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject(`Error:${response.status}`);
+      }
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
   }
 
-  _makeRequest(method, url, body) {
-    return fetch(url, {
-      method: method,
-      headers: this._headers,
-      body: body ? JSON.stringify(body) : undefined,
-    }).then((res) => {
-      return this._handleResponse(res);
-    });
+    async handleEditProfile(body, token) {
+    const {name, about} = body;
+    try {
+      const response = await fetch(`${this._baseUrl}/users/me`, {
+        method: 'PATCH',
+        headers: {
+          ...this._headers,
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: name,
+          about: about,
+        }),
+      });
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject(`Error ${response.status}`);
+      }
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
   }
 
-  getCardList() {
-    return this._makeRequest("GET", `${this._baseUrl}/cards`);
+    async addCard(body, token) {
+    const { title, link } = body;
+    try {
+      const response = await fetch(`${this._baseUrl}/cards`, {
+        method: 'POST',
+        headers: {
+          ...this._headers,
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: title,
+          link: link,
+        }),
+      });
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject(`Error ${response.status}`);
+      }
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
+  }
+  
+  async removeCard(cardId, onDeleteCard, token) {
+    try {
+      const response = await fetch(`${this._baseUrl}/cards/${cardId}`, {
+        method: 'DELETE',
+        headers: {
+          ...this._headers,
+          authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        onDeleteCard();
+      } else {
+        return Promise.reject(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
   }
 
-  getUserInfo() {
-    return this._makeRequest("GET", `${this._baseUrl}/users/me`);
+  async setUserAvatar(link, token) {
+    try {
+      const response = await fetch(`${this._baseUrl}/users/me/avatar`, {
+        method: 'PATCH',
+        headers: {
+          ...this._headers,
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          avatar: link,
+        }),
+      });
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject(`Error ${response.status}`);
+      }
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
   }
 
-  handleEditProfile({ name, about }) {
-    return this._makeRequest("PATCH", `${this._baseUrl}/users/me`, {
-      name,
-      about,
-    });
-  }
-
-  addCard({ name, link }) {
-    return this._makeRequest("POST", `${this._baseUrl}/cards`, { name, link });
-  }
-
-  removeCard(cardId) {
-    return this._makeRequest("DELETE", `${this._baseUrl}/cards/${cardId}`);
-  }
-
-  setUserInfo({ name, about }) {
-    return this._makeRequest("PATCH", `${this._baseUrl}/users/me`, {
-      name,
-      about,
-    });
-  }
-
-  setUserAvatar(avatar) {
-    return this._makeRequest("PATCH", `${this._baseUrl}/users/me/avatar`, {
-      avatar,
-    });
-  }
-
-  changeLikeCardStatus(cardId, liked) {
-    return liked ? this.addLike(cardId) : this.removeLike(cardId);
-  }
-
-  addLike(cardId) {
-    return this._makeRequest("PUT", `${this._baseUrl}/cards/likes/${cardId}`);
-  }
-
-  removeLike(cardId) {
-    return this._makeRequest(
-      "DELETE",
-      `${this._baseUrl}/cards/likes/${cardId}`
-    );
+  async changeLikeCardStatus(cardId, isLiked, token) {
+    try {
+      let response;
+      if (isLiked) {
+        response = await fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+          method: 'DELETE',
+          headers: {
+            ...this._headers,
+            authorization: `Bearer ${token}`,
+          },
+        });
+      } else {
+        response = await fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+          method: 'PUT',
+          headers: {
+            ...this._headers,
+            authorization: `Bearer ${token}`,
+          },
+        });
+      }
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject(`Error ${response.status}`);
+      }
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
   }
 }
 
 const api = new Api({
-  baseUrl: "https://api.javierdamiani.chickenkiller.com",
+  baseUrl: API_BASE_URL,
   headers: {
-    authorization: "278fd53d-b84a-49c6-aef1-178b52806850",
     "Content-Type": "application/json",
   },
-  groupId: "web_es_cohort_05",
 });
 
 export default api;
