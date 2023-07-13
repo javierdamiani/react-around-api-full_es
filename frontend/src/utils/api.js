@@ -74,7 +74,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "https://around.nomoreparties.co/v1/web_es_cohort_03",
+  baseUrl: "https://api.javierdamiani.chickenkiller.com",
   headers: {
     authorization: "278fd53d-b84a-49c6-aef1-178b52806850",
     "Content-Type": "application/json",
