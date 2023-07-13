@@ -4,7 +4,13 @@ import addBtn from "../images/vector_plus.svg";
 import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Main(props) {
+function Main({ onEditProfile,
+  onAddPlace,
+  onEditAvatar,
+  onDeleteCard,
+  onCardClick,
+  onCardLike,
+  cards}) {
   const currentUser = React.useContext(CurrentUserContext);
 
   return (
@@ -18,14 +24,14 @@ function Main(props) {
               className="profile__avatar"
             />
             <div
-              onClick={props.onEditAvatar}
+              onClick={onEditAvatar}
               className="profile__avatar-overlay"
             ></div>
           </div>
 
           <div className="profile__info">
             <img
-              onClick={props.onEditProfile}
+              onClick={onEditProfile}
               src={editBtn}
               alt="Botón para editar el contenido del perfil"
               className="profile__info-button"
@@ -41,7 +47,7 @@ function Main(props) {
             </div>
           </div>
           <button
-            onClick={props.onAddPlace}
+            onClick={onAddPlace}
             className="profile__add"
             id="addImg"
           >
@@ -49,18 +55,19 @@ function Main(props) {
           </button>
         </div>
         <div className="elements">
-          {props.cards.map((card) => {
-            return (
-              <Card
-                key={card._id}
-                card={card}
-                onCardClick={props.onCardClick}
-                onDeleteCard={props.onDeleteCard}
-                onCardLike={props.onCardLike}
-                onCardDelete={props.onCardDelete}
-              />
-            );
-          })}
+        {cards &&
+              cards
+                .slice()
+                .reverse()
+                .map((card) => (
+                  <Card
+                    key={card._id}
+                    card={card}
+                    onCardClick={onCardClick}
+                    onCardLike={onCardLike}
+                    onDeleteCard={onDeleteCard}
+                  />
+                ))}
         </div>
       </main>
     </>

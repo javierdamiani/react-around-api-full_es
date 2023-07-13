@@ -79,15 +79,13 @@ function App() {
     setIsSelectedCardOpen(true);
   }
 
-    function handleCardDelete(card) {
-    api
-      .removeCard(card._id)
-      .then(() => {
-        const newCards = cards.filter((c) => c._id !== card._id);
-        setCards(newCards);
-      })
-      .catch((err) => console.log(err));
-  }
+  function handleCardDelete(cardId) {
+    api.removeCard(
+      cardId,
+      () => setCards((state) => state.filter((c) => c._id !== cardId)),
+      token
+    );
+  };
 
   function closeAllPopups() {
     setIsAddPlacePopUpOpen(false);
@@ -108,37 +106,31 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-
-
-  function handleUpdateUser({ name, about }) {
+  function handleUpdateUser({name, about}) {
     api
-      .setUserInfo({ name, about }, token)
-      .then((data) => {
-        setCurrentUser(data);
-        setIsEditProfilePopUpOpen(false);
-      })
-      .catch((err) => console.log(err));
-  }
+      .editProfile({name, about}, token)
+      .then((data) =>
+        setCurrentUser({
+          ...currentUser,
+          name: data.data.name,
+          about: data.data.about,
+        })
+      );
+  };
 
-  function handleUpdateAvatar({ avatar }) {
+  function handleUpdateAvatar(link) {
     api
-      .setUserAvatar(avatar)
-      .then((data) => {
-        setCurrentUser(data);
-        setIsEditAvatarPopUpOpen(false);
-      })
-      .catch((err) => console.log(err));
-  }
+      .setUserAvatar(link, token)
+      .then((data) =>
+        setCurrentUser({...currentUser, avatar: data.data.avatar})
+      );
+  };
 
-  function handleAddPlaceSubmit({ name, link }) {
-    api
-      .addCard({ name, link }, token)
-      .then((newCard) => {
-        setCards([newCard, ...cards]);
-        setIsAddPlacePopUpOpen(false);
-      })
-      .catch((err) => console.log(err));
-  }
+  const handleAddPlaceSubmit = ({ title, link }) => {
+    api.addCard({ title, link }, token).then((newCard) => {
+      setCards([...cards, newCard.data]);
+    });
+  };
 
   const handleLogin = () => {
     setLoggedIn(true);

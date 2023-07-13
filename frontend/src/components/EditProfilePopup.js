@@ -2,26 +2,38 @@ import React from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function EditProfilePopup(props) {
-  const [name, setName] = React.useState("");
-  const [description, setDescription] = React.useState("");
+function EditProfilePopup({  isOpen,
+  onClose,
+  onUpdateUser}) {
 
   const currentUser = React.useContext(CurrentUserContext);
 
+  const [name, setName] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [errors, setErrors] = React.useState({});
+
   React.useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
+    setName('');
+    setDescription('');
   }, [currentUser]);
 
   function handleSubmit(e) {
     // Evita que el navegador navegue hacia la dirección del formulario
     e.preventDefault();
-
     // Pasa los valores de los componentes gestionados al controlador externo
-    props.onUpdateUser({
+    onUpdateUser({
       name,
       about: description,
     });
+    onClose()
+  }
+
+  function handleNameChange(evt) {
+    setName(evt.target.value);
+  }
+
+  function handleDescriptionChange(evt) {
+    setDescription(evt.target.value);
   }
 
   return (
@@ -29,9 +41,10 @@ function EditProfilePopup(props) {
       <PopupWithForm
         name="profile"
         title="Editar Perfil"
-        isOpen={props.isOpen}
-        onClose={props.onClose}
-        onSubmit={handleSubmit}>
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={handleSubmit}
+        setErrors={setErrors}>
           <label className="popup__field">
             <input
               type="text"
@@ -41,11 +54,11 @@ function EditProfilePopup(props) {
               minLength="2"
               maxLength="40"
               className="popup__input popup__input_type_name"
-              value={name || ''}
-              onChange={(e) => setName(e.target.value)}
+              value={name}
+              onChange={handleNameChange}
               required
             />
-            <span id="popupName-error" className="popup__error"></span>
+            <span id="popupName-error" className="popup__error popup__error_visible">{errors.name}</span>
           </label>
           <label className="popup__field">
             <input
@@ -56,11 +69,11 @@ function EditProfilePopup(props) {
               maxLength="200"
               id="popupAbout"
               className="popup__input popup__input_type_about"
-              value={description || ''}
-              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+              onChange={handleDescriptionChange}
               required
             />
-            <p id="popupAbout-error" className="popup__error"></p>
+            <p id="popupAbout-error" className="popup__error popup__error_visible">{errors.about}</p>
           </label>
           </PopupWithForm>
     </>

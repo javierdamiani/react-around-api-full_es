@@ -1,15 +1,18 @@
 import React from 'react';
 import PopupWithForm from "./PopupWithForm";
 
-function EditAvatarPopup(props) {
-  const inputRef = React.createRef()
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar}) {
+
+  const inputRef = React.createRef();
+  const [errors, setErrors] = React.useState({}); 
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.onUpdateAvatar({
+    onUpdateAvatar({
       avatar: inputRef.current.value,
     });
     e.target.reset();
+    onClose();
   }
 
   return (
@@ -17,8 +20,10 @@ function EditAvatarPopup(props) {
       <PopupWithForm
         name="image_profile"
         title="Cambiar foto de perfil"
-        isOpen={props.isOpen}
-        onClose={props.onClose}
+        isOpen={isOpen}
+        onClose={onClose}
+        errors={errors}
+        setErrors={setErrors}
         onSubmit={handleSubmit}
       >
         <label className="popup__field">
@@ -34,7 +39,7 @@ function EditAvatarPopup(props) {
           <p
             id="popUpInputImage-error"
             className="popup__error popup-input-image-error"
-          ></p>
+          >{errors['image-link']}</p>
         </label>
       </PopupWithForm>
     </>

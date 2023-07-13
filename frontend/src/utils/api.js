@@ -42,7 +42,7 @@ class Api {
     }
   }
 
-    async handleEditProfile(body, token) {
+    async editProfile(body, token) {
     const {name, about} = body;
     try {
       const response = await fetch(`${this._baseUrl}/users/me`, {
