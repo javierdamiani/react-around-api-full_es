@@ -26,7 +26,7 @@ mongoose
 // Middleware para analizar el cuerpo de la solicitud en formato JSON
 app.use(express.json());
 app.use(cors());
-app.options('*', cors()); // Habilitar las solicitudes de todas las rutas
+app.options('*', cors());
 
 app.use(requestLogger);
 
@@ -105,6 +105,6 @@ const errorHandler = (err, req, res, next) => {
 app.use(errorHandler);
 
 // Inicio del servidor
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log('Servidor en ejecución en el puerto 3000');
 });

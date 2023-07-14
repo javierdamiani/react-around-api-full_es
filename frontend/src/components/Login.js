@@ -32,10 +32,6 @@ const Login = ({ handleLogin }) => {
         }
       })
       .catch((err) => {
-        setInfoToolOpen(true);
-        setFormData({ email: "", password: "" });
-        navigate("/signin", { state: { error: err } });
-        handleLogin();
         console.log(err);
       });
   };
