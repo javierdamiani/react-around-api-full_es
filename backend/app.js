@@ -105,6 +105,6 @@ const errorHandler = (err, req, res, next) => {
 app.use(errorHandler);
 
 // Inicio del servidor
-app.listen(3001, () => {
+app.listen(3000, () => {
   console.log('Servidor en ejecución en el puerto 3000');
 });
