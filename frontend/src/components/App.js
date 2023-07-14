@@ -44,9 +44,9 @@ function App() {
   React.useEffect(() => {
     if(token) {
       api
-      .getCardList()
+      .getCardList(token)
       .then((data) => {
-        setCards(data);
+        setCards(data.data);
       });
     }
   }, [token])
@@ -54,7 +54,7 @@ function App() {
   React.useEffect(() => {
     if(token) {
       api
-      .getUserInfo()
+      .getUserInfo(token)
       .then((data) => {
         setCurrentUser(data);
       })

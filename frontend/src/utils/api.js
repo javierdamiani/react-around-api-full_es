@@ -66,6 +66,28 @@ class Api {
     }
   }
 
+    async setUserAvatar(link, token) {
+    try {
+      const response = await fetch(`${this._baseUrl}/users/me/avatar`, {
+        method: 'PATCH',
+        headers: {
+          ...this._headers,
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          avatar: link,
+        }),
+      });
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject(`Error ${response.status}`);
+      }
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
+  }
+
     async addCard(body, token) {
     const { title, link } = body;
     try {
@@ -103,28 +125,6 @@ class Api {
         onDeleteCard();
       } else {
         return Promise.reject(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      throw new Error(`${error}`);
-    }
-  }
-
-  async setUserAvatar(link, token) {
-    try {
-      const response = await fetch(`${this._baseUrl}/users/me/avatar`, {
-        method: 'PATCH',
-        headers: {
-          ...this._headers,
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          avatar: link,
-        }),
-      });
-      if (response.ok) {
-        return response.json();
-      } else {
-        return Promise.reject(`Error ${response.status}`);
       }
     } catch (error) {
       throw new Error(`${error}`);
