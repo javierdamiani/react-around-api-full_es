@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -82,8 +83,7 @@ app.use('/', (req, res) => {
 const errorHandler = (err, req, res, next) => {
   if (err.name === 'CastError') {
     return res.status(400).send({
-      message:
-        'Se pasaron datos inválidos a los métodos para crear un usuario/tarjeta o actualizar el avatar/perfil de un usuario.',
+      message: `Se pasaron datos inválidos a los métodos para crear un usuario/tarjeta o actualizar el avatar/perfil de un usuario. Error: ${err.message}`,
     });
   }
   if (err.name === 'DocumentNotFoundError') {
