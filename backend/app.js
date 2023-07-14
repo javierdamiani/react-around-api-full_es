@@ -5,8 +5,8 @@ import cors from 'cors';
 import { celebrate, Joi, errors } from 'celebrate';
 import usersRoutes from './routes/users.js';
 import cardRoutes from './routes/cards.js';
-import auth from './middlewares/auth.js';
 import { login, createUser } from './controllers/users.js';
+import auth from './middlewares/auth.js';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
 
 const app = express();
@@ -60,9 +60,7 @@ app.post(
 );
 
 app.use(auth);
-
 app.use('/users', usersRoutes);
-
 app.use('/cards', cardRoutes);
 
 app.use(errorLogger);

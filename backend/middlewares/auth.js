@@ -26,5 +26,6 @@ export default (req, res, next) => {
 
   req.user = payload; // añadir el payload al objeto Request
 
-  next(); // pasar la solicitud más adelante
+  next();
+  return req.user;
 };

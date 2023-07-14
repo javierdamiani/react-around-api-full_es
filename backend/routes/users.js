@@ -19,9 +19,9 @@ const validateURL = (value, helpers) => {
 };
 
 router.get('/', getUsers);
-router.get('/:id', getUserId);
 router.get('/me', getUserInfo);
 router.patch('/me', updateUser);
+router.get('/:id', getUserId);
 router.patch(
   '/me/avatar',
   celebrate({

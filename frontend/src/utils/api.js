@@ -32,6 +32,7 @@ class Api {
           authorization: `Bearer ${token}`,
         },
       });
+      console.log(response)
       if (response.ok) {
         return response.json();
       } else {
