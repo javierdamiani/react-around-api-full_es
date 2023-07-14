@@ -208,7 +208,7 @@ function App() {
         <AddPlacePopup
           isOpen={isAddPlacePopUpOpen}
           onClose={closeAllPopups}
-          onAddPlaceSubmit={handleAddPlaceSubmit}
+          onAddPlace={handleAddPlaceSubmit}
         />
 
         <PopupWithForm

@@ -2,7 +2,7 @@ import React from 'react';
 import PopupWithForm from "./PopupWithForm";
 
 
-const AddPlacePopup = ({ isOpen, onClose, onAddPlaceSubmit}) => {
+const AddPlacePopup = ({ isOpen, onClose, onAddPlace}) => {
 
   const [errors, setErrors] = React.useState({}); 
   const [title, setTitle] = React.useState("");
@@ -10,7 +10,7 @@ const AddPlacePopup = ({ isOpen, onClose, onAddPlaceSubmit}) => {
 
   const handleSubmit = (e) => {
       e.preventDefault();
-      onAddPlaceSubmit({title, link})
+      onAddPlace({title, link})
       onClose();
   }
 

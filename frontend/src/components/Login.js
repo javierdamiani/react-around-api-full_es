@@ -19,6 +19,7 @@ const Login = ({ handleLogin }) => {
     setInfoToolOpen(false);
     navigate("/signin", { state: {} });
   };
+  
   const onLogin = (e) => {
     const { password, email } = formData;
     e.preventDefault();

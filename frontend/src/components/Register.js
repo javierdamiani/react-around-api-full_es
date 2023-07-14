@@ -25,14 +25,15 @@ const Register = () => {
   const onRegister = (evt) => {
     evt.preventDefault();
     const { password, email } = formData;
-    auth.register(password, email).then((res) => {
-      if (res.data) {
-        navigate("/signin", { state: "success" });
-      } else {
-        setError(true);
-      }
-      setInfoToolOpen(true);
-    });
+auth.register(password, email).then((res) => {
+  if (res && res.data) {
+    navigate("/signin", { state: "success" });
+  } else {
+    setError(true);
+  }
+  setInfoToolOpen(true);
+});
+
   };
 
   return (

@@ -4,10 +4,10 @@ import likeBtn from "../images/like_button.svg";
 import rectangle from "../images/Rectangle.png";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card(props) {
+function Card({card, onCardClick, onCardLike, onCardDelete}) {
   const currentUser = React.useContext(CurrentUserContext);
   // Verificando si el usuario actual es el propietario de la tarjeta actual
-  const isOwn = props.card.owner._id === currentUser._id;
+  const isOwn = card.owner._id === currentUser._id;
 
   // Creando una variable que después establecerás en `className` para el botón eliminar
   const cardDeleteButtonClassName = `card__delete-button ${
@@ -17,7 +17,7 @@ function Card(props) {
   }`;
 
   // Verifica si el usuario actual le dio "like" a la tarjeta
-  const isLiked = props.card.likes.some((i) => i._id === currentUser._id);
+  const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
   // Crea una variable que después establecerás en `className` para el botón like
   const cardLikeButtonClassName = `card__like-button ${
@@ -27,21 +27,21 @@ function Card(props) {
   }`;
 
   function handleClick() {
-    props.onCardClick(props.card);
+    onCardClick(card);
   }
 
   function handleLikeClick() {
-    props.onCardLike(props.card);
+    onCardLike(card);
   }
 
   function handleDeleteClick() {
-    props.onCardDelete(props.card)
+    onCardDelete(card)
   }
 
   return (
     <>
       <div
-        key={props.card._id}
+        key={card._id}
         className="elements__template_element"
         id="cities"
       >
@@ -61,18 +61,18 @@ function Card(props) {
             onClick={handleLikeClick}
           />
           <p className="elements__template_element-counter" id="heartCounter">
-            {props.card.likes ? props.card.likes.length : 0}
+            {card.likes ? card.likes.length : 0}
           </p>
         </div>
         <img
-          src={props.card.link}
-          alt={props.card.name}
+          src={card.link}
+          alt={card.name}
           className="elements__template_element-image"
           id="cardImg"
           onClick={handleClick}
         />
         <p className="elements__template_element-text" id="cardTitle">
-          {props.card.name}
+          {card.name}
         </p>
         <img
           src={rectangle}
