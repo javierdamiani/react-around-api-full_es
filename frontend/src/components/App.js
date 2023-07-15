@@ -56,7 +56,7 @@ function App() {
       api
       .getUserInfo(token)
       .then((data) => {
-        setCurrentUser(data);
+        setCurrentUser(data.data);
       })
       .catch((error) => console.log(error));
     }
