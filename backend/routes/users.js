@@ -11,25 +11,19 @@ import {
 
 const router = express.Router();
 
-const validateURL = (value, helpers) => {
-  if (validator.isURL(value)) {
-    return value;
-  }
-  return helpers.error('string.uri');
-};
-
 router.get('/', getUsers);
+router.get('/id/:id', getUserId);
 router.get('/me', getUserInfo);
 router.patch('/me', updateUser);
-router.get('/:id', getUserId);
-router.patch(
-  '/me/avatar',
-  celebrate({
-    body: Joi.object({
-      avatar: Joi.string().custom(validateURL).required(),
+router.patch('/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().custom((value, helpers) => {
+      if (!validator.isURL(value)) {
+        return helpers.error('string.uri');
+      }
+      return value;
     }),
   }),
-  updateAvatar,
-);
+}), updateAvatar);
 
 export default router;
