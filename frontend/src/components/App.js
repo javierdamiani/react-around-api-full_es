@@ -122,7 +122,7 @@ function App() {
     api
       .setUserAvatar(link, token)
       .then((data) =>
-        setCurrentUser({...currentUser, avatar: data.avatar})
+        setCurrentUser({...currentUser, avatar: data.data.avatar})
       );
   };
 
