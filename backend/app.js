@@ -68,8 +68,10 @@ app.use(errorLogger);
 app.use(errors());
 
 // Middleware para manejar rutas no encontradas
-app.use((req, res) => {
-  res.status(404).send({ message: 'Recurso solicitado no encontrado' });
+app.use((err, req, res) => {
+  res.status(400).send({
+    message: `Error: ${err.message}`,
+  });
 });
 
 // Middleware para manejar la ruta raíz
