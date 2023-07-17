@@ -135,7 +135,7 @@ class Api {
   async changeLikeCardStatus(cardId, isLiked, token) {
     try {
       let response;
-      if (!isLiked) {
+      if (isLiked) {
         response = await fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
           method: 'DELETE',
           headers: {

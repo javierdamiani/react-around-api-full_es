@@ -17,7 +17,7 @@ function Card({card, onCardClick, onCardLike, onCardDelete}) {
   }`;
 
   // Verifica si el usuario actual le dio "like" a la tarjeta
-  const isLiked = card.likes.some((i) => i._id === currentUser._id);
+  const isLiked = card.likes.some((id) => id === currentUser._id);
 
   // Crea una variable que después establecerás en `className` para el botón like
   const cardLikeButtonClassName = `card__like-button ${
