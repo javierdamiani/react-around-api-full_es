@@ -29,5 +29,5 @@ Technologies Used 💻
 
 The application is accessible through the following URLs:
 
-- Frontend: www.javierdamiani.chickenkiller.com
-- Backend: api.javierdamiani.chickenkiller.com
+- Frontend: https://javierdamiani.chickenkiller.com
+- Backend: https://api.javierdamiani.chickenkiller.com
