@@ -79,10 +79,10 @@ function App() {
     setIsSelectedCardOpen(true);
   }
 
-  function handleCardDelete(cardId) {
+  function handleCardDelete(card) {
     api.removeCard(
-      cardId,
-      () => setCards((state) => state.filter((c) => c._id !== cardId)),
+      card,
+      () => setCards((state) => state.filter((c) => c._id !== card)),
       token
     );
   };
@@ -178,7 +178,7 @@ function App() {
                   onEditProfile={onEditProfileClick}
                   onAddPlace={onAddPlaceClick}
                   onEditAvatar={onEditAvatarClick}
-                  onCardDelete={handleCardDelete}
+                  onDeleteCard={handleCardDelete}
                   onCardClick={handleCardClick}
                   onCardLike={handleCardLike}
                   cards={cards}

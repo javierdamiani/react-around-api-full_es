@@ -7,7 +7,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 function Card({card, onCardClick, onCardLike, onCardDelete}) {
   const currentUser = React.useContext(CurrentUserContext);
   // Verificando si el usuario actual es el propietario de la tarjeta actual
-  const isOwn = card.owner._id === currentUser._id;
+  const isOwn = card.owner === currentUser._id;
 
   // Creando una variable que después establecerás en `className` para el botón eliminar
   const cardDeleteButtonClassName = `card__delete-button ${
