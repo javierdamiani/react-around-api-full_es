@@ -80,14 +80,13 @@ function App() {
   }
 
   function handleCardDelete(card) {
-    setSelectedCard(card);
     api.removeCard(
-      card,
-      () => setCards((state) => state.filter((c) => c._id !== card)),
+      card._id,
+      () => setCards((state) => state.filter((c) => c._id !== card._id)),
       token
     );
   };
-
+  
   function closeAllPopups() {
     setIsAddPlacePopUpOpen(false);
     setIsEditAvatarPopUpOpen(false);
