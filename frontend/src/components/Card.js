@@ -4,7 +4,7 @@ import likeBtn from "../images/like_button.svg";
 import rectangle from "../images/Rectangle.png";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({card, onCardClick, onCardLike, onCardDelete}) {
+function Card({card, onCardClick, onCardLike, onDeleteCard}) {
   const currentUser = React.useContext(CurrentUserContext);
   // Verificando si el usuario actual es el propietario de la tarjeta actual
   const isOwn = card.owner === currentUser._id;
@@ -35,7 +35,7 @@ function Card({card, onCardClick, onCardLike, onCardDelete}) {
   }
 
   function handleDeleteClick() {
-    onCardDelete(card)
+    onDeleteCard(card)
   }
 
   return (
